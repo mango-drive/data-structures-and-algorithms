@@ -13,15 +13,15 @@ learning-datastructures-algorithms/
         stacks-queues/
 ```
 
-- git init and push
+- [x] git init and push
 
 ## Deque
 ### To Do
-- [] Change file to Deque
-- [] Reorder methods in API order
-- [] Double check code
-- [] Check exceptions
-- [] Design a test object:
+- [x] Change file to Deque
+- [x] Reorder methods in API order
+- [x] Double check code
+- [x] Check exceptions
+- [x] Design a test object:
 
 ``` java
 class Test {
@@ -40,7 +40,7 @@ test.assertEquals(size(), 0, "size returns 0 when the queue is empty");
 // Console output:
 // [TEST] size returns 0 when queue is empty:              passed
 ```
-- [] Explain why you designed this (Princeton requirement)
+- [x] Explain why you designed this (Princeton requirement)
 - [] Test all public functions in main
     - addFirst, addLast, iterator, removeFirst
 - [] Write 3 sentence project description and readme. Include requirements/insights
