@@ -4,24 +4,36 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Board {
     private int[][] tiles;
+    private int n;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         this.tiles = tiles;
+        this.n = tiles.length;
     }
                                            
     // string representation of this board
     public String toString() {
-        String s = Integer.toString(tiles.length);
-        return s;
+
+        StringBuilder s = new StringBuilder();
+        s.append(n + "\n");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                s.append(String.format("%2d", tiles[i][j]));
+            }
+            s.append("\n");
+        }
+        return s.toString();
     }
 
-    // // board dimension n
-    // public int dimension() {}
+    // board dimension n
+    public int dimension() {
+        return n;
+    }
 
-    // // number of tiles out of place
-    // public int hamming() {}
+    // number of tiles out of place
+    public int hamming() {}
 
     // // sum of Manhattan distances between tiles and goal
     // public int manhattan() {}
