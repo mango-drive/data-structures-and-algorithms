@@ -1,7 +1,7 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
-
+// java -cp algs4.jar Board.java
 public class Board {
     private int[][] tiles;
     private int n;
@@ -12,10 +12,10 @@ public class Board {
         this.tiles = tiles;
         this.n = tiles.length;
     }
+
                                            
     // string representation of this board
     public String toString() {
-
         StringBuilder s = new StringBuilder();
         s.append(n + "\n");
         for (int i = 0; i < n; i++) {
@@ -27,13 +27,27 @@ public class Board {
         return s.toString();
     }
 
+
+
     // board dimension n
     public int dimension() {
         return n;
     }
 
     // number of tiles out of place
-    public int hamming() {}
+    public int hamming() {
+        int count = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int tile = tiles[i][j];
+                int correctPosition = i * n + j + 1;
+                if (tile != 0 && tile != correctPosition) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
     // // sum of Manhattan distances between tiles and goal
     // public int manhattan() {}
@@ -52,7 +66,7 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        String filename = "puzzle2x2-00.txt";
+        String filename = "puzzle2x2-03.txt";
 
         // read in the board specified in the filename
         In in = new In(filename);
@@ -67,6 +81,7 @@ public class Board {
         // solve the slider puzzle
         Board initial = new Board(tiles);
         System.out.println(initial.toString());
+        System.out.print(initial.hamming());
     }
 
 }
