@@ -82,15 +82,15 @@ public class Board {
         return false;
     }
 
-    private isValidIndex(int x, int y) {
+    private boolean isValidIndex(int x, int y) {
         return x >= 0 && x < n 
                 && y >= 0 && y < n;
     }
 
-    // all neighboring boards
-    public Iterable<Board> neighbors() {
+    // // all neighboring boards
+    // public Iterable<Board> neighbors() {
         
-    }
+    // }
 
     // // a board that is obtained by exchanging any pair of tiles
     // public Board twin() {}
@@ -120,6 +120,7 @@ public class Board {
         System.out.println(initial.hamming());
         System.out.println(initial.manhattan());
 
+        System.out.println("Testing equality");
         Object initial_2 = (Object) new Board(tiles);
         System.out.println(initial.equals(initial_2));
 
@@ -127,6 +128,17 @@ public class Board {
         int[][] tiles2 = Board.read(filename);
         Board notEqual = new Board(tiles2);
         System.out.println(initial.equals(tiles2));
+
+        System.out.println("Testing valid index");
+        System.out.println(initial.isValidIndex(1, 0));
+        System.out.println(initial.isValidIndex(1, 1));
+        System.out.println(initial.isValidIndex(0, 1));
+
+        System.out.println(initial.isValidIndex(-1, 0));
+        System.out.println(initial.isValidIndex(5, 0));
+        System.out.println(initial.isValidIndex(-1, -1));
+        System.out.println(initial.isValidIndex(10, 5));
+        System.out.println(initial.isValidIndex(1, 10));
 
     }
 }
