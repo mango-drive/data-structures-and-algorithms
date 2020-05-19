@@ -1,7 +1,6 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
-// java -cp algs4.jar Board.java
 public class Board {
     private int[][] tiles;
     private int n;
@@ -83,18 +82,21 @@ public class Board {
         return false;
     }
 
-    // // all neighboring boards
-    // public Iterable<Board> neighbors() {}
+    private isValidIndex(int x, int y) {
+        return x >= 0 && x < n 
+                && y >= 0 && y < n;
+    }
+
+    // all neighboring boards
+    public Iterable<Board> neighbors() {
+        
+    }
 
     // // a board that is obtained by exchanging any pair of tiles
     // public Board twin() {}
 
     // unit testing (not graded)
-
-    public static void main(String[] args) {
-        String filename = "puzzle04.txt";
-
-        // read in the board specified in the filename
+    private static int[][] read(String filename) {
         In in = new In(filename);
         int n = in.readInt();
         int[][] tiles = new int[n][n];
@@ -103,12 +105,28 @@ public class Board {
                 tiles[i][j] = in.readInt();
             }
         }
+        return tiles;
+    }
+    
+
+    // java -cp algs4.jar Board.java
+    public static void main(String[] args) {
+        String filename = "puzzle04.txt";
+        int[][] tiles = Board.read(filename);
 
         // solve the slider puzzle
         Board initial = new Board(tiles);
         System.out.println(initial.toString());
         System.out.println(initial.hamming());
         System.out.println(initial.manhattan());
-    }
 
+        Object initial_2 = (Object) new Board(tiles);
+        System.out.println(initial.equals(initial_2));
+
+        filename = "puzzle4x4-00.txt";
+        int[][] tiles2 = Board.read(filename);
+        Board notEqual = new Board(tiles2);
+        System.out.println(initial.equals(tiles2));
+
+    }
 }
