@@ -65,8 +65,10 @@ public class Board {
         return manhattan;
     }
 
-    // // is this board the goal board?
-    // public boolean isGoal() {}
+    // is this board the goal board?
+    public boolean isGoal() {
+        return hamming() == 0;
+    }
 
     // // does this board equal y?
     // public boolean equals(Object y) {}
