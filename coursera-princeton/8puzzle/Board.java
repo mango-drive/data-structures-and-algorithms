@@ -70,8 +70,18 @@ public class Board {
         return hamming() == 0;
     }
 
-    // // does this board equal y?
-    // public boolean equals(Object y) {}
+    // does this board equal y?
+    public boolean equals(Object y) {
+        if (y instanceof Board) {
+            Board b2 = (Board) y;
+
+            if (y.toString().equals(this.toString())) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // // all neighboring boards
     // public Iterable<Board> neighbors() {}
@@ -80,6 +90,7 @@ public class Board {
     // public Board twin() {}
 
     // unit testing (not graded)
+
     public static void main(String[] args) {
         String filename = "puzzle04.txt";
 
