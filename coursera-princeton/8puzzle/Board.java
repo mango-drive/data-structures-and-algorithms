@@ -49,8 +49,21 @@ public class Board {
         return count;
     }
 
-    // // sum of Manhattan distances between tiles and goal
-    // public int manhattan() {}
+    // sum of Manhattan distances between tiles and goal
+    public int manhattan() {
+        int manhattan = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int tile = tiles[i][j];
+                if (tile != 0) {
+                    int goal_i = (tile - 1) / n;
+                    int goal_j = (tile - 1) % n;
+                    manhattan += Math.abs(goal_i - i) + Math.abs(goal_j - j);
+                }
+            }
+        }
+        return manhattan;
+    }
 
     // // is this board the goal board?
     // public boolean isGoal() {}
@@ -66,7 +79,7 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        String filename = "puzzle2x2-03.txt";
+        String filename = "puzzle04.txt";
 
         // read in the board specified in the filename
         In in = new In(filename);
@@ -81,7 +94,8 @@ public class Board {
         // solve the slider puzzle
         Board initial = new Board(tiles);
         System.out.println(initial.toString());
-        System.out.print(initial.hamming());
+        System.out.println(initial.hamming());
+        System.out.println(initial.manhattan());
     }
 
 }
