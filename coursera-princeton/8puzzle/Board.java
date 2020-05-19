@@ -1,15 +1,35 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import java.util.LinkedList;
+
 public class Board {
     private int[][] tiles;
     private int n;
+    private int blank_i, blank_j;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         this.tiles = tiles;
         this.n = tiles.length;
+        setBlankCoordinates();
+    }
+
+    private void setBlankCoordinates() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (tiles[i][j] == 0) {
+                    blank_i = i;
+                    blank_j = j;
+                    return;
+                }
+            }
+        }
+    }
+
+    public String blankCoordinates() {
+        return Integer.toString(blank_i) + ", " + Integer.toString(blank_j);
     }
 
                                            
@@ -19,7 +39,7 @@ public class Board {
         s.append(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                s.append(String.format("%2d", tiles[i][j]));
+                s.append(String.format("%2d ", tiles[i][j]));
             }
             s.append("\n");
         }
@@ -82,15 +102,51 @@ public class Board {
         return false;
     }
 
-    private boolean isValidIndex(int x, int y) {
-        return x >= 0 && x < n 
-                && y >= 0 && y < n;
+    private boolean isValidIndex(int i, int j) {
+        return i >= 0 && i < n 
+            && j >= 0 && j < n;
     }
 
-    // // all neighboring boards
-    // public Iterable<Board> neighbors() {
-        
-    // }
+    
+    private int[][] deepCopy() {
+        int[][] tiles_copy = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                tiles_copy[i][j] = tiles[i][j];
+            }
+        }
+        return tiles_copy;
+    }
+
+    private void swap(int[][] a, int i, int j, int x, int y) {
+        int temp = a[i][j];
+        a[i][j] = a[x][y];
+        a[x][y] = temp;
+    }
+
+    // all neighboring boards
+    public Iterable<Board> neighbors() {
+        LinkedList<Board> neighbours = new LinkedList<Board>();
+        int[][] directions = {
+            {1, 0},  // north
+            {0, 1},  // east
+            {-1, 0}, // south
+            {0, -1}  // west
+        };
+
+        for (int[] d : directions) {
+            int x = d[0];
+            int y = d[1];
+
+            if (isValidIndex(x, y)) {
+                int[][] new_tiles = this.deepCopy();
+                swap(new_tiles, blank_i, blank_j, x, y);
+                neighbours.add(new Board(new_tiles));
+            }
+        }
+
+        return neighbours;
+    }
 
     // // a board that is obtained by exchanging any pair of tiles
     // public Board twin() {}
@@ -140,5 +196,15 @@ public class Board {
         System.out.println(initial.isValidIndex(10, 5));
         System.out.println(initial.isValidIndex(1, 10));
 
+        System.out.println("Blank Square");
+        System.out.println(initial.toString());
+        System.out.println(initial.blankCoordinates());
+        System.out.println(notEqual.toString());
+        System.out.println(notEqual.blankCoordinates());
+
+        System.out.println("Neighbours");
+        for (Board b : initial.neighbors()) {
+            System.out.println(b.toString());
+        }
     }
 }
