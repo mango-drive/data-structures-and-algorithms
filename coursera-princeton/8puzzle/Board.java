@@ -1,38 +1,45 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import java.util.LinkedList;
 
 public class Board {
     private int[][] tiles;
     private int n;
-    private int blank_i, blank_j;
+    private int[] blankCoordinates;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         this.tiles = tiles;
         this.n = tiles.length;
-        setBlankCoordinates();
+
+        blankCoordinates = findBlank();
     }
 
-    private void setBlankCoordinates() {
+    private int[] findBlank() {
+        int[] coordinates = new int[2];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (tiles[i][j] == 0) {
-                    blank_i = i;
-                    blank_j = j;
-                    return;
+                    coordinates[0] = i;
+                    coordinates[1] = j;
+                    return coordinates;
                 }
             }
         }
+        return null;
     }
 
-    public String blankCoordinates() {
-        return Integer.toString(blank_i) + ", " + Integer.toString(blank_j);
+    private String blankCoordinatesAsString() {
+        return Integer.toString(blankCoordinates[0]) + ", " + Integer.toString(blankCoordinates[1]);
     }
 
-                                           
+    private int[] blankCoordinates() {
+        return blankCoordinates;
+    }
+
     // string representation of this board
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -45,8 +52,6 @@ public class Board {
         }
         return s.toString();
     }
-
-
 
     // board dimension n
     public int dimension() {
@@ -140,7 +145,7 @@ public class Board {
 
             if (isValidIndex(x, y)) {
                 int[][] new_tiles = this.deepCopy();
-                swap(new_tiles, blank_i, blank_j, x, y);
+                swap(new_tiles, blankCoordinates[0], blankCoordinates[1], x, y);
                 neighbours.add(new Board(new_tiles));
             }
         }
@@ -148,8 +153,43 @@ public class Board {
         return neighbours;
     }
 
-    // // a board that is obtained by exchanging any pair of tiles
-    // public Board twin() {}
+    private int[] randomTile(int n, Iterable<int[]> constraints) {
+        int[] tile = new int[2];
+        do {
+            tile[0] = StdRandom.uniform(n);
+            tile[1] = StdRandom.uniform(n);
+        } while ( !isValidTwinTile(tile, constraints) );
+
+        return tile;
+    }
+
+    private boolean isValidTwinTile(int[] tile, Iterable<int[]> constraints) {
+        for (int[] illegal_tile : constraints) {
+            int x = illegal_tile[0];
+            int y = illegal_tile[1];
+
+            if (tile[0] == x && tile[1] == y) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // a board that is obtained by exchanging any pair of tiles
+    public Board twin() {
+        int[][] twinTiles = deepCopy();
+
+        LinkedList<int[]> constraints = new LinkedList<>();
+        constraints.add(blankCoordinates());
+        int[] t1 = randomTile(n, constraints);
+
+        constraints.add(t1);
+        int[] t2 = randomTile(n, constraints);
+
+        swap(twinTiles, t1[0], t1[1], t2[0], t2[1]);
+
+        return new Board(twinTiles);
+    }
 
     // unit testing (not graded)
     private static int[][] read(String filename) {
@@ -198,13 +238,18 @@ public class Board {
 
         System.out.println("Blank Square");
         System.out.println(initial.toString());
-        System.out.println(initial.blankCoordinates());
+        System.out.println(initial.blankCoordinatesAsString());
         System.out.println(notEqual.toString());
-        System.out.println(notEqual.blankCoordinates());
+        System.out.println(notEqual.blankCoordinatesAsString());
 
         System.out.println("Neighbours");
         for (Board b : initial.neighbors()) {
             System.out.println(b.toString());
+        }
+
+        System.out.println("Generate 5 twins");
+        for (int i = 0; i < 5; i++) {
+            System.out.println(initial.twin().toString());
         }
     }
 }
