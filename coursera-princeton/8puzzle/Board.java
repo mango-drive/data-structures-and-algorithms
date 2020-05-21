@@ -16,6 +16,7 @@ public class Board {
         this.n = tiles.length;
 
         blankCoordinates = findBlank();
+        if ( blankCoordinates == null ) throw new IllegalArgumentException("No blank square found");
     }
 
     private int[] findBlank() {
@@ -112,7 +113,6 @@ public class Board {
             && j >= 0 && j < n;
     }
 
-    
     private int[][] deepCopy() {
         int[][] tiles_copy = new int[n][n];
         for (int i = 0; i < n; i++) {
@@ -153,7 +153,7 @@ public class Board {
         return neighbours;
     }
 
-    private int[] randomTile(int n, Iterable<int[]> constraints) {
+    private int[] randomTileNotInConstraints(int n, Iterable<int[]> constraints) {
         int[] tile = new int[2];
         do {
             tile[0] = StdRandom.uniform(n);
@@ -181,10 +181,10 @@ public class Board {
 
         LinkedList<int[]> constraints = new LinkedList<>();
         constraints.add(blankCoordinates());
-        int[] t1 = randomTile(n, constraints);
+        int[] t1 = randomTileNotInConstraints(n, constraints);
 
         constraints.add(t1);
-        int[] t2 = randomTile(n, constraints);
+        int[] t2 = randomTileNotInConstraints(n, constraints);
 
         swap(twinTiles, t1[0], t1[1], t2[0], t2[1]);
 
@@ -204,7 +204,6 @@ public class Board {
         return tiles;
     }
     
-
     // java -cp algs4.jar Board.java
     public static void main(String[] args) {
         String filename = "puzzle04.txt";
